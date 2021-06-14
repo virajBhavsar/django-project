@@ -1,0 +1,50 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<div class="jumbotron mt-3 shadow-lg">
+      <article class="media content-section shadow">
+        <div class="user-data">
+        <a href="{{ post.author.profile.image.url }} " target="_blank" class="profile-img-container"> <img src="{{ post.author.profile.image.url }}  " alt="" class="article-img rounded-circle img-thumbnail img-fluid shadow">
+        </a>
+        <div class="article-metadata d-flex justify-content-between">
+            <a class="mr-2 " href="{% url 'user-posts' post.author.username  %}"><h3>{{ post.author }}</h3></a>
+              <small class="text-muted">{{ post.date_upload|date:"F d, Y" }}</small>
+          </div>
+        </div>
+
+        <div class="media-body">
+          
+          {% if post.file %}
+          <a href="{{ post.file.url }}"  download class="text-dark text-justify "><h5>{{ post.blog }}</h5></a>
+          {% endif %}
+     
+      
+     
+          <h2><a class="article-title text-justify " href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+          <div class="d-flex justify-content-between">
+            <p class="article-content text-justify text-truncate overflow-hidden">{{ post.content }}</p>
+            {% if post.file %}
+            <div class="post-media">
+            <video controls class="video-post" src="{{post.file.url}}" onerror="this.onerror=null; this.remove();"></video>
+            <img class="img-post" src="{{post.file.url}}" onerror="this.onerror=null; this.remove();">
+          </div>
+
+      {% if object.author != user %}
+          <div class="form-group mt-0 pt-0 d-flex justify-content-end">          
+            <a href="{{ object.file.url }}" download class="btn btn-primary flex-last" type="submit"><i class="fas fa-download"></i> Downlaod</a>
+          </div>
+        {% endif %}
+                    {% endif %}
+        <hr>
+        {% if object.author == user %}
+          <div class="post-update-btns">
+            <a class="btnd update-btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+            <a class="btnd delete-btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+          </div>
+        {% endif %}
+        
+          </div>
+      
+        </div>
+      </article>
+    </div>
+{% endblock content %}
